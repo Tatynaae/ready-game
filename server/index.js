@@ -35,11 +35,16 @@ socketIO.on('connection', (socket) => {
         socketIO.emit('updateUsers', users);
     });
 
-
-    socketIO.on('startGame', () => {
-        console.log('Game started by admin');
-        socketIO.emit('gameStarted');
-    })
+    socket.on('startGame', () => {
+        const user = users.find((user) => user.id === socket.id);
+        if (user && user.nickname === 'admin') { 
+            console.log('Game started by admin');
+            socketIO.emit('gameStarted');
+            readyList = [];
+        } else {
+            console.log('Only the admin can end the game');
+        }
+    });
 
     socket.on('userReady', ({ id, timestamp }) => {
         if (!readyList.some((entry) => entry.id === id)) {

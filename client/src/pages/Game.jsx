@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const Game = ({ socket }) => {
-
-    const navigate = useNavigate();
 
     const [users, setUsers] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -20,10 +17,10 @@ const Game = ({ socket }) => {
 
         socket.on('updateUsers', (users) => setUsers(users));
 
-        socket.on('gameStarted', () => {
-            setGameStarted(true);
-            setReadyList([]);
-        });
+        // socket.on('gameStarted', () => {
+        //     setGameStarted(true);
+        //     setReadyList([]);
+        // });
 
         socket.on('readyList', (readyList) => setReadyList(readyList));
 
@@ -54,7 +51,18 @@ const Game = ({ socket }) => {
         return () => {
             socket.off('gameEnded');
         };
-    }, [socket, navigate]);
+    }, [socket]);
+
+    useEffect(() => {
+        socket.on('gameStarted', () => {
+            setGameStarted(true);
+            setReadyList([]);
+        });
+    
+        return () => {
+            socket.off('gameStarted');
+        };
+    }, [socket]);
     
 
     const startGame = () => {
