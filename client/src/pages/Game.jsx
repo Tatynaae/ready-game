@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const Game = ({ socket }) => {
+
+    const navigate = useNavigate();
 
     const [users, setUsers] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -42,9 +45,27 @@ const Game = ({ socket }) => {
         }
     }, [gameStarted]);
 
+    useEffect(() => {
+        socket.on('gameEnded', () => {
+            // Handle game end logic, e.g., redirect to the home page or reset state
+            // navigate('/'); 
+        });
+    
+        return () => {
+            socket.off('gameEnded');
+        };
+    }, [socket, navigate]);
+    
+
     const startGame = () => {
         console.log("Start Game clicked");
         socket.emit('startGame');
+        setGameStarted(true);
+    };
+    
+    const endGame = () => {
+        console.log("End Game clicked");
+        socket.emit('endGame');
     };
 
     const markReady = () => {
@@ -58,14 +79,15 @@ const Game = ({ socket }) => {
             {timer && <h3>Starting in: {timer}</h3>}
 
             {isAdmin && !gameStarted && <button onClick={startGame}>Start Game</button>}
+            {isAdmin && gameStarted && <button onClick={endGame}>End Game</button>}
             {gameStarted && !isAdmin && <button onClick={markReady}>Ready</button>}
 
             <div>
                 <h2>Users:</h2>
                 <ul>
                     {
-                        users.map((user) => (
-                            <li key={user.id}>{user?.nickname}</li>
+                        users.map((user, index) => (
+                            <li key={index}>{user?.nickname}</li>
                         ))
                     }
                 </ul>
@@ -76,7 +98,7 @@ const Game = ({ socket }) => {
                     <h2>Ready Order:</h2>
                     <ul>
                         {readyList.map((user, index) => (
-                            <li key={user.id}>{index+1}.{" "}{user?.nickname}</li>
+                            <li key={index}>{index+1}.{" "}{user?.nickname}</li>
                         ))}
                     </ul>
                 </div>

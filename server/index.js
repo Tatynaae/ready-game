@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 
 const http = require('http').Server(app);
-// const cors = require('cors');
 
 const socketIO = require('socket.io')(http, {
     cors: {
@@ -50,6 +49,19 @@ socketIO.on('connection', (socket) => {
         const orderedList = readyList.map((entry) => users.find((u) => u.id === entry.id));
         socketIO.emit('readyList', orderedList);
     });
+
+    socket.on('endGame', () => {
+        const user = users.find((user) => user.id === socket.id);
+        if (user && user.nickname === 'admin') { 
+            console.log('Game ended by admin');
+            socketIO.emit('gameEnded');
+            users = [];
+            readyList = [];
+        } else {
+            console.log('Only the admin can end the game');
+        }
+    });
+    
     
 
     socketIO.on('disconnect', () => {
