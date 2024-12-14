@@ -10,7 +10,6 @@ const Game = ({ socket }) => {
     const [timer, setTimer] = useState(null);
 
     useEffect(() => {
-
         const user = JSON.parse(localStorage.getItem('user'));
         setIsAdmin(user === 'admin');
 
@@ -44,6 +43,7 @@ const Game = ({ socket }) => {
     }, [gameStarted]);
 
     const startGame = () => {
+        console.log("Start Game clicked");
         socket.emit('startGame');
     };
 
