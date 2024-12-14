@@ -80,7 +80,7 @@ const Game = ({ socket }) => {
 
             {isAdmin && !gameStarted && <button onClick={startGame}>Start Game</button>}
             {isAdmin && gameStarted && <button onClick={endGame}>End Game</button>}
-            {gameStarted && !isAdmin && <button onClick={markReady}>Ready</button>}
+            {timer === 3 && !isAdmin && <button onClick={markReady}>Ready</button>}
 
             <div>
                 <h2>Users:</h2>

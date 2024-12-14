@@ -6,7 +6,7 @@ const http = require('http').Server(app);
 
 const socketIO = require('socket.io')(http, {
     cors: {
-        origin: ['http://localhost:5173', 'https://ready-game.vercel.app', 'https://ready-game.vercel.app/game'], 
+        origin: ['http://localhost:5173', 'http://localhost:5173/game', 'https://ready-game.vercel.app', 'https://ready-game.vercel.app/game'], 
         methods: ['GET', 'POST'], 
         allowedHeaders: ['Content-Type'], 
     }
@@ -30,6 +30,7 @@ socketIO.on('connection', (socket) => {
             return;
         }
         users.push({ id: socket.id, nickname, ready: false });
+        console.log(users, 'users');
         console.log(`${nickname} joined the game`);
         socketIO.emit('updateUsers', users);
     });
