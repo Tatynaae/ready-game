@@ -29,6 +29,10 @@ socketIO.on('connection', (socket) => {
             console.warn('Nickname is required to join the game.');
             return;
         }
+        const user = users.find(user => user.id === socket.id)
+        if(user){
+            return;
+        }
         users.push({ id: socket.id, nickname, ready: false });
         console.log(users, 'users');
         console.log(`${nickname} joined the game`);
