@@ -8,7 +8,7 @@ const socket = socketIO.connect('http://localhost:8383');
 function App() {
   return (
     <Routes>
-        <Route path="/" element={<Home socket={ socket }/>} />
+        <Route path="/" element={<Home />} />
         <Route path="/game" element={<Game socket={ socket }/>} />
     </Routes>
   )
