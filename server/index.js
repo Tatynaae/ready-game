@@ -6,7 +6,7 @@ const http = require('http').Server(app);
 
 const socketIO = require('socket.io')(http, {
     cors: {
-        origin: ['http://localhost:5173', 'https://ready-game.vercel.app'], 
+        origin: ['http://localhost:5173', 'https://ready-game.vercel.app', 'https://ready-game.vercel.app/game'], 
         methods: ['GET', 'POST'], 
         allowedHeaders: ['Content-Type'], 
     }
