@@ -9,14 +9,9 @@ const Home = ({ socket }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         localStorage.setItem("user", JSON.stringify(user));
+        socket.emit('joinGame', user);
         navigate("/game");
     };
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     socket.emit('joinGame', user);
-    //     navigate("/game");
-    // };
     
     return (
         <form onSubmit={handleSubmit}>
