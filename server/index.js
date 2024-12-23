@@ -6,14 +6,23 @@ const http = require('http').Server(app);
 
 const socketIO = require('socket.io')(http, {
     cors: {
-        origin: ['http://localhost:5173', 'http://localhost:5173/game', 'https://ready-game.vercel.app', 'https://ready-game.vercel.app/game'], 
-        methods: ['GET', 'POST'], 
-        allowedHeaders: ['Content-Type'], 
+        origin: [
+            'http://localhost:5173',
+            'https://ready-game.vercel.app',
+            'http://192.168.1.100:5173',
+            'http://localhost:8383',
+            'http://127.0.0.1:64510'
+        ],
+        allowedHeaders: ['Content-Type'],
     }
 });
 
 let users = [];
 let readyList = [];
+app.use((req, res, next) => {
+    console.log('Request Origin:', req.get('Origin'));
+    next();
+});
 
 app.get('/', (req, res) => {
     res.json({
@@ -71,8 +80,6 @@ socketIO.on('connection', (socket) => {
             console.log('Only the admin can end the game');
         }
     });
-    
-    
 
     socketIO.on('disconnect', () => {
         users = users.filter((user) => user.id !== socket.id);
