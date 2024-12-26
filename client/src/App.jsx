@@ -4,6 +4,7 @@ import Game from "./pages/Game.jsx";
 import Home from "./pages/Home.jsx";
 
 const socket = socketIO.connect('http://localhost:8383');
+// const socket = socketIO.connect('https://dace-193-34-225-215.ngrok-free.app');
 
 function App() {
   return (
