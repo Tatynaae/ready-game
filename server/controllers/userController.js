@@ -1,14 +1,16 @@
-const users = require('../services/socketService').users;
-const readyList = require('../services/socketService').readyList;
+const { users, readyList } = require('../services/socketService');
 
 const joinGame = (socket, io, nickname) => {
     if(!nickname) return console.warn('Nickname is required to join the game.');
 
-    if(users.find(user => user.id === socket.id)) return;
+    const user = users?.find(user => user.id === socket.id);
+    if(user) return;
 
-    users.push({id: socket.id, nickname, ready: false});
+    const data = {id: socket.id, nickname, ready: false};
+    users.push(data);
     console.log(`${nickname} joined the game`);
     io.emit('updateUsers', users);
+    console.log(users, 'users');
 };
 
 const userReady = (socket, io, {id, timestamp}) => {
@@ -25,20 +27,20 @@ const userReady = (socket, io, {id, timestamp}) => {
 };
 
 const handleDisconnect = (socket, io) => {
-    const updatedUsers = users.filter(user => user.id !== socket.id);
-    const updatedReadyList = readyList.filter(entry => entry.id !== socket.id);
+    const updatedUsers = users?.filter(user => user.id !== socket.id);
+    const updatedReadyList = readyList?.filter(entry => entry.id !== socket.id);
 
-    users.length = 0;
+    // users.length = 0;
     users.push(...updatedUsers);
 
-    readyList.length = 0;
+    // readyList.length = 0;
     readyList.push(...updatedReadyList);
 
     console.log(`${socket.id} user disconnected`);
     io.emit('updateUsers', users);
 };
 
-module.exports  = {
+module.exports = {
     joinGame,
     userReady,
     handleDisconnect
