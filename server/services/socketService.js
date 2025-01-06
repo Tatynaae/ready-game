@@ -1,6 +1,3 @@
-// const { joinGame, userReady, handleDisconnect } = require('../controllers/userController');
-// const { startGame, endGame } = require('../controllers/gameController');
-
 let users = [];
 let readyList = [];
 

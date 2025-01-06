@@ -3,10 +3,9 @@ import { Route, Routes } from "react-router-dom";
 import Game from "./pages/Game.jsx";
 import Home from "./pages/Home.jsx";
 
-const socket = socketIO.connect('http://localhost:8383', {
-  'transports': ['websocket'],
+const socket = socketIO.connect('https://3af6-193-34-225-215.ngrok-free.app', {
+  transports: ['websocket'],
 });
-// const socket = socketIO.connect('https://dace-193-34-225-215.ngrok-free.app');
 
 function App() {
   return (
